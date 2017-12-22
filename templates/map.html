@@ -1,0 +1,10 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <h1>Map of the 50 state capitals:</h1>
+  <br><br>
+  <img src="{{url_for('static', filename='state_capitals.png')}}" alt="Map of USA Capitals" width=1280 height=714>
+  <br><br>
+  <p>Image from pixabay.com/CCO Creative Commons License.</p>
+  <br>
+{% endblock %}
