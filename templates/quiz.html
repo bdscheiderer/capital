@@ -1,6 +1,20 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <h1>Quiz template</h1>
-  <p>{{n}} question state capital quiz.</p>
+  <h3>Take the Quiz!</h3>
+  <p>Choose the correct capital for each state. When finished, click the submit button to check your answers.</p>
+  <br>
+  <form action="/result" method="POST">
+      <ol>
+          {% for question in capitals_states %}
+              <li>What is the capital of <b>{{question[4]}}</b>?</li>
+              {% for i in [0,1,2,3] %}
+                  <input type="radio" value="{{question[i]}}" name="{{question[4]}}" />{{question[i]}}&nbsp;&nbsp;
+              {% endfor %}
+              <br><br>
+          {% endfor %}
+      </ol>
+      <input type="submit" value="submit" />
+      <br><br>
+  </form>
 {% endblock %}
