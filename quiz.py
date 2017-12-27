@@ -1,6 +1,6 @@
 from flask import Flask, render_template, session, redirect, url_for, escape, request
 from capital_data import Capitals
-import random
+import random, datetime
 
 app = Flask(__name__)
 app.secret_key = "anyrandomstring"
@@ -37,6 +37,7 @@ def result():
         length = len(answers)
         number = session['number']
         total_correct, wrong = check(answers, Capitals)
+        save_result(total_correct, number)
         if length == 0:
             return render_template('result_error.html')
         elif total_correct == number:
@@ -45,14 +46,6 @@ def result():
             return render_template('result.html', total_correct = total_correct, message = "Greet score!", wrong = wrong)
         else:
             return render_template('result_warning.html', total_correct = total_correct, message = "Keep practicing", wrong = wrong)
-
-
-'''
-    if request.method == "POST":
-        answers = request.form
-        total_correct, message = check(answers, Capitals)
-        return render_template('result.html', total_correct = total_correct, message = message)
-'''
 
 @app.route('/stats')
 def stats():
@@ -99,21 +92,9 @@ def check(answers, Capitals):
     print(total_correct, wrong)
     return total_correct, wrong
 
-'''
-    n = session['number']
-    if len(answers) == 0:
-        message = "It appears no answers were submitted, please try again."
-    elif total_correct == n:
-        message = "Congratulations, perfect score!"
-    elif total_correct / n > .799:
-        message = "Great score!"
-    elif total_correct / n > .499:
-        message = "Keep practicing!"
-    else:
-         message = "Thank you for trying the quiz!"
-'''
-
-
+def save_result(total_correct, number):
+    date = datetime.datetime.now().strftime ("%Y%m%d")
+    pass
 
 if __name__ == '__main__':
     app.run(debug=True)
