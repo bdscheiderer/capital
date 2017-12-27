@@ -2,15 +2,15 @@
 
 {% block body %}
   <div class="jumbotron text-center">
-    <h2>Welcome to the State Capital Quiz!</h2>
+    <h1>Welcome to the State Capital Quiz!</h1>
     <p class="lead">This application will test your knowledge of all 50 state capitals of the United States of America.</p>
     <br><br>
     <p>Click a button to start either the 20 or 50 question state capital quiz:</p>
     <form action = "/quiz" method = "POST">
-      <p><input type = "submit" name = "Submit" value = "20 Questions"></p>
+      <p><button type="submit" class="btn btn-primary" name="Submit" value="20">20 Questions</button></p>
     </form>
     <form action = "/quiz" method = "POST">
-      <p><input type = "submit" name = "Submit" value = "50 Questions"></p>
+      <p><button type="submit" class="btn btn-primary" name="Submit" value="50">50 Questions</button></p>
     </form>
   </div>
 {% endblock %}
