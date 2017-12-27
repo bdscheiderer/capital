@@ -1,6 +1,6 @@
 from flask import Flask, render_template, session, redirect, url_for, escape, request
 from capital_data import Capitals
-import random, datetime
+import random, datetime, sqlite3
 
 app = Flask(__name__)
 app.secret_key = "anyrandomstring"
@@ -93,8 +93,13 @@ def check(answers, Capitals):
     return total_correct, wrong
 
 def save_result(total_correct, number):
-    date = datetime.datetime.now().strftime ("%Y%m%d")
-    pass
+    date = datetime.datetime.now().strftime("%y-%m-%d")
+    conn = sqlite3.connect('capital_db.sqlite')
+    cur = conn.cursor()
+    cur.execute('INSERT INTO Scores (datestamp, quiz, score) VALUES (?, ?, ?)', (date, number, total_correct,))
+    conn.commit()
+    cur.close()
+    conn.close()
 
 if __name__ == '__main__':
     app.run(debug=True)

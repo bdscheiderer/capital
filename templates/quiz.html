@@ -1,22 +1,21 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+<div class="jumbotron">
   <h2>Take the Quiz!</h2>
   <p>Choose the correct capital for each state. When finished, click the submit button to check your answers.</p>
-  <br>
   <form action="/result" method="POST">
       <ol>
           {% for question in capitals_states %}
               <li>What is the capital of <b>{{question[4]}}</b>?</li>
               {% for i in [0,1,2,3] %}
-                  <input type="radio" value="{{question[i]}}" name="{{question[4]}}" />{{question[i]}}&nbsp;&nbsp;
+                  <input type="radio" value="{{question[i]}}" name="{{question[4]}}" /> {{question[i]}}<br>
               {% endfor %}
-              <br><br>
+              <br>
           {% endfor %}
       </ol>
-      <! input type="submit" value="Submit" />
-
       <button type="submit" class="btn btn-primary" value="Submit">Submit</button>
       <br><br>
   </form>
+</div>
 {% endblock %}

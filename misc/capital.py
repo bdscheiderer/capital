@@ -1,3 +1,4 @@
+# file here for reference - can be run from python 3 console
 # State Capital Quiz
 
 import random

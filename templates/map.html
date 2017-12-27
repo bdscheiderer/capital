@@ -1,10 +1,10 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <h2>Map of the 50 state capitals</h2>
+<div class="jumbotron">
+  <img src="{{url_for('static', filename='state_capitals.png')}}" alt="Map of USA Capitals" width=1280 height=1280>
   <br><br>
-  <img src="{{url_for('static', filename='state_capitals.png')}}" alt="Map of USA Capitals" width=1280 height=714>
-  <br><br>
-  <p>Image from <a href="http://www.pixabay.com">pixabay.com</a> / <a href="https://creativecommons.org/publicdomain/zero/1.0/deed.en">CCO Creative Commons License</a>.</p>
-  <br>
+  <p>Image credit: <a href="https://www.shutterstock.com/">Shutterstock.com</a> </p>
+  <div><a class="btn btn-primary" role="button" href="{{ url_for('index') }}">Try the quiz!</a></div>
+</div>
 {% endblock %}

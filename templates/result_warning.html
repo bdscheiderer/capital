@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block body %}
+<div class="jumbotron">
   <div class="page-header">
     <h2>Quiz results:</h2>
   </div>
@@ -16,4 +17,5 @@
       </ol>
   </div>
   <div><a class="btn btn-primary" role="button" href="{{ url_for('index') }}">Try again!</a></div>
+</div>
 {% endblock %}
