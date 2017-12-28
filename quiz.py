@@ -1,6 +1,8 @@
-from flask import Flask, render_template, session, redirect, url_for, escape, request
+# This is a state capital quiz app developed with python, flask and SQLite3
+from flask import Flask, render_template, session, url_for, request
 from capital_data import Capitals
 import random, datetime, sqlite3
+import matplotlib.pyplot as plt, mpld3, numpy as np
 
 app = Flask(__name__)
 app.secret_key = "anyrandomstring"
@@ -43,13 +45,14 @@ def result():
         elif total_correct == number:
             return render_template('result_perfect.html', total_correct = total_correct, number = number)
         elif total_correct / number > .699:
-            return render_template('result.html', total_correct = total_correct, message = "Greet score!", wrong = wrong)
+            return render_template('result.html', total_correct = total_correct, wrong = wrong)
         else:
-            return render_template('result_warning.html', total_correct = total_correct, message = "Keep practicing", wrong = wrong)
+            return render_template('result_warning.html', total_correct = total_correct, wrong = wrong)
 
 @app.route('/stats')
 def stats():
-    return render_template('stats.html')
+    dat20avg, dat20plot, dat50avg, dat50plot = get_stats()
+    return render_template('stats.html', dat20avg = dat20avg, dat20plot = dat20plot, dat50avg = dat50avg, dat50plot = dat50plot)
 
 def questions(n, Capitals):
         allstates = list(Capitals.keys())
@@ -100,6 +103,52 @@ def save_result(total_correct, number):
     conn.commit()
     cur.close()
     conn.close()
+
+def get_stats():
+    # open connection to database
+    conn = sqlite3.connect('capital_db.sqlite')
+    cur = conn.cursor()
+    # get score data for 20 and 50 questions quizs
+    cur.execute('SELECT score FROM Scores WHERE quiz=20')
+    d20 = cur.fetchall()
+    dt = np.dtype('int')
+    dat20 = np.asarray(d20, dt)
+    dat20 = np.reshape(dat20, -1)
+    cur.execute('SELECT score FROM Scores WHERE quiz=50')
+    d50 = cur.fetchall()
+    dat50 = np.asarray(d50, dt)
+    dat50 = np.reshape(dat50, -1)
+    # calculate stats
+    dat20avg = get_average(dat20)
+    dat50avg = get_average(dat50)
+    # create histograms
+    dat20plot = get_plot(dat20, 21, 0, 20)
+    dat50plot = get_plot(dat50, 51, 0, 50)
+    # close database connection
+    cur.close()
+    conn.close()
+    return dat20avg, dat20plot, dat50avg, dat50plot
+
+def get_average(dat):
+    dict = {}
+    dict['mean'] = int(np.mean(dat) + 0.5)
+    dict['median'] = int(np.median(dat) + 0.5)
+    dict['std'] = int(np.std(dat) + 0.5)
+    dict['attempts'] = len(dat)
+    return dict
+
+def get_plot(dat, bwidth, bmin, bmax):
+    if bwidth <50:
+        step = 1
+    else:
+        step = 2
+    counts = np.bincount(dat)
+    fig, ax = plt.subplots()
+    ax.bar(range(bwidth), counts, width=1, align='center')
+    ax.set(xticks=range(0, bwidth, step), xlim=[-1, bwidth])
+    plt.title("Histogram of Quiz Scores")
+    chart = mpld3.fig_to_html(fig)
+    return chart
 
 if __name__ == '__main__':
     app.run(debug=True)

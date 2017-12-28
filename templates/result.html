@@ -1,12 +1,12 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<div class="jumbotron text-center">
+<div class="jumbotron">
   <div class="page-header">
     <h2>Quiz results:</h2>
   </div>
   <div class="alert alert-info" role="alert">
-    <p>{{message}} You got {{total_correct}} out of {{session['number']}} correct!</p>
+    <p>Great score! You got {{total_correct}} out of {{session['number']}} correct!</p>
   </div>
   <div>
     <p>You missed the following:</p>
