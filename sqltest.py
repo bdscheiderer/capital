@@ -1,19 +1,26 @@
 # set up test mysql db
 
 from flask import Flask
-from flaskext.mysql import MySQL
+from flask_sqlalchemy import SQLAlchemy
 
-mysql = MySQL()
 app = Flask(__name__)
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'EmpData'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-mysql.init_app(app)
+SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
+    username="bdscheid",
+    password="password_db",
+    hostname="bdscheid.mysql.pythonanywhere-services.com",
+    databasename="bdscheid$capital_db",
+)
+app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
+app.config["SQLALCHEMY_POOL_RECYCLE"] = 299
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
+print('Done')
 
 @app.route("/")
 def hello():
     return "Welcome to Python Flask App!"
 
-if __name__ == "__main__":
-    app.run()
+#if __name__ == "__main__":
+#    app.run()
