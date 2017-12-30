@@ -3,7 +3,7 @@ from flask import Flask, render_template, session, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 from capital_data import Capitals
 from credentials import Credentials
-import random, datetime, sqlite3
+import random, datetime
 import matplotlib.pyplot as plt, mpld3, numpy as np
 
 Capitals = Capitals()
@@ -55,7 +55,7 @@ def about():
 
 @app.route('/map')
 def map():
-    return render_template('map.html', capitals = Capitals)
+    return render_template('map.html')
 
 @app.route('/result', methods = ["POST"])
 def result():
@@ -81,8 +81,7 @@ def result():
 def stats():
     dat20, plot20 = get_stats(20)
     dat50, plot50 = get_stats(50)
-    return render_template('stats_temp.html', dat20=dat20, dat50=dat50)
-#    return render_template('stats.html', dat20=dat20, dat50=dat50, plot20=plot20, plot50=plot50)
+    return render_template('stats.html', dat20=dat20, dat50=dat50, plot20=plot20, plot50=plot50)
 
 def questions(n, Capitals):
         allstates = list(Capitals.keys())
@@ -145,7 +144,7 @@ def get_stats(n):
     return dict, plot
 
 def get_plot(data, bwidth):
-    if bwidth == 50:
+    if bwidth > 40:
         step = 2
     else:
         step = 1
