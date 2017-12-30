@@ -92,7 +92,6 @@ def check(answers, Capitals):
             total_correct = total_correct + 1
         else:
             wrong.append([city_correct, state])
-    print(total_correct, wrong)
     return total_correct, wrong
 
 def save_result(total_correct, number):
