@@ -1,27 +1,27 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <div class="jumbotron text-justified">
-    <div class="container-fluid">
-      <h3>Statistics from the users taking the 20 question quiz:</h3>
-        <ul>
-          <li>Mean quiz score: {{dat20avg['mean']}}</li>
-          <li>Median quiz score: {{dat20avg['median']}}</li>
-          <li>Standard deviation: {{dat20avg['std']}}</li>
-          <li>Number of quiz attempts: {{dat20avg['attempts']}}</li>
-        </ul>
-      <p>{{dat20plot|safe}}</p>&nbsp;
+    <div class="jumbotron text-justified">
+        <div class="container-fluid">
+            <h3>Statistics from the users taking the 20 question quiz:</h3>
+            <ul>
+                <li>Mean quiz score: {{dat20avg['mean']}}</li>
+                <li>Median quiz score: {{dat20avg['median']}}</li>
+                <li>Standard deviation: {{dat20avg['std']}}</li>
+                <li>Number of quiz attempts: {{dat20avg['attempts']}}</li>
+            </ul>
+            <p>{{dat20plot|safe}}</p>&nbsp;
+        </div>
+        <div class="container-fluid">
+            <h3>Statistics from the users taking the 50 question quiz:</h3>
+            <ul>
+                <li>Mean quiz score: {{dat50avg['mean']}}</li>
+                <li>Median quiz score: {{dat50avg['median']}}</li>
+                <li>Standard deviation: {{dat50avg['std']}}</li>
+                <li>Number of quiz attempts: {{dat50avg['attempts']}}</li>
+            </ul>
+            <p>{{dat50plot|safe}}</p>&nbsp;
+        </div>
+        <div><a class="btn btn-primary" role="button" href="{{ url_for('index') }}">Try the quiz!</a></div>
     </div>
-    <div class="container-fluid">
-      <h3>Statistics from the users taking the 50 question quiz:</h3>
-      <ul>
-        <li>Mean quiz score: {{dat50avg['mean']}}</li>
-        <li>Median quiz score: {{dat50avg['median']}}</li>
-        <li>Standard deviation: {{dat50avg['std']}}</li>
-        <li>Number of quiz attempts: {{dat50avg['attempts']}}</li>
-      </ul>
-        <p>{{dat50plot|safe}}</p>&nbsp;
-    </div>
-    <div><a class="btn btn-primary" role="button" href="{{ url_for('index') }}">Try the quiz!</a></div>
-  </div>
 {% endblock %}

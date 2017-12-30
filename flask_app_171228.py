@@ -122,8 +122,8 @@ def get_stats():
     dat20avg = get_average(dat20)
     dat50avg = get_average(dat50)
     # create histograms
-    dat20plot = get_plot(dat20, 21, 0, 20)
-    dat50plot = get_plot(dat50, 51, 0, 50)
+    dat20plot = get_plot(dat20, 21)
+    dat50plot = get_plot(dat50, 51)
     # close database connection
     cur.close()
     conn.close()
@@ -137,7 +137,7 @@ def get_average(dat):
     dict['attempts'] = len(dat)
     return dict
 
-def get_plot(dat, bwidth, bmin, bmax):
+def get_plot(dat, bwidth):
     if bwidth <50:
         step = 1
     else:
@@ -151,4 +151,4 @@ def get_plot(dat, bwidth, bmin, bmax):
     return chart
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
