@@ -5,22 +5,22 @@
         <div class="container-fluid">
             <h3>Statistics from the users taking the 20 question quiz:</h3>
             <ul>
-                <li>Mean quiz score: {{dat20avg['mean']}}</li>
-                <li>Median quiz score: {{dat20avg['median']}}</li>
-                <li>Standard deviation: {{dat20avg['std']}}</li>
-                <li>Number of quiz attempts: {{dat20avg['attempts']}}</li>
+                <li>Mean quiz score: {{dat20['mean']}}</li>
+                <li>Median quiz score: {{dat20['median']}}</li>
+                <li>Standard deviation: {{dat20['std']}}</li>
+                <li>Number of quiz attempts: {{dat20['attempts']}}</li>
             </ul>
-            <p>{{dat20plot|safe}}</p>&nbsp;
+            <p>{{plot20|safe}}</p>&nbsp;
         </div>
         <div class="container-fluid">
             <h3>Statistics from the users taking the 50 question quiz:</h3>
             <ul>
-                <li>Mean quiz score: {{dat50avg['mean']}}</li>
-                <li>Median quiz score: {{dat50avg['median']}}</li>
-                <li>Standard deviation: {{dat50avg['std']}}</li>
-                <li>Number of quiz attempts: {{dat50avg['attempts']}}</li>
+                <li>Mean quiz score: {{dat50['mean']}}</li>
+                <li>Median quiz score: {{dat50['median']}}</li>
+                <li>Standard deviation: {{dat50['std']}}</li>
+                <li>Number of quiz attempts: {{dat50['attempts']}}</li>
             </ul>
-            <p>{{dat50plot|safe}}</p>&nbsp;
+            <p>{{plot50|safe}}</p>&nbsp;
         </div>
         <div><a class="btn btn-primary" role="button" href="{{ url_for('index') }}">Try the quiz!</a></div>
     </div>

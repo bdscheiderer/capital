@@ -1,8 +1,10 @@
 # set up test mysql db
-
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import numpy as np
+import matplotlib, datetime
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt, mpld3
 
 app = Flask(__name__)
 
@@ -38,17 +40,37 @@ def get_stats(n):
     dict['std'] = int(np.std(data) + 0.5)
     dict['attempts'] = len(data)
     # create histograms
-#    dat20plot = get_plot(dat20, 21)
-#    dat50plot = get_plot(dat50, 51)
-    return dict
+    plot = get_plot(data, n+1)
+    return dict, plot
+
+def get_plot(data, bwidth):
+    if bwidth == 50:
+        step = 2
+    else:
+        step = 1
+    counts = np.bincount(data)
+    fig, ax = plt.subplots()
+    ax.bar(range(bwidth), counts, width=1, align='center')
+    ax.set(xticks=range(0, bwidth, step), xlim=[-1, bwidth])
+    plt.title("Histogram of Quiz Scores")
+    chart = mpld3.fig_to_html(fig, template_type="simple")
+    mpld3.show(chart)
+    return chart
+
+def insert_result(newdata):
+    date = datetime.datetime.now().strftime("%y-%m-%d")
+    print(newdata, date)
+    me = scores(Date=date, Quiz=newdata[0], Score=newdata[1])
+    db.session.add(me)
+    db.session.commit()
 
 @app.route("/")
 def hello():
     return "Welcome to Python Flask App!"
 
-stats20 = get_stats(20)
-stats50 = get_stats(50)
-print(stats20, stats50)
+newdata = [20,15]
+insert_result(newdata)
+
 print('Done')
 
 #if __name__ == "__main__":
