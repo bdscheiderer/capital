@@ -49,10 +49,24 @@ def result():
         else:
             return render_template('result_warning.html', total_correct = total_correct, wrong = wrong)
 
-@app.route('/stats')
+@app.route('/stats', methods = ['GET', 'POST'])
 def stats():
-    dat20avg, dat20plot, dat50avg, dat50plot = get_stats()
-    return render_template('stats.html', dat20avg = dat20avg, dat20plot = dat20plot, dat50avg = dat50avg, dat50plot = dat50plot)
+    quiz_names = ['20 Question Quiz', '50 Question Quiz']
+    current_quiz_name = ['20 Questions']
+    if request.method == 'POST':
+        print('POST')
+    else:
+        print('GET')
+    if request.form.get('quiz_name') == '':
+        name = quiz_names[0]
+    if request.form.get('quiz_name') == '50 Question Quiz':
+        name = quiz_names[1]
+        num = 50
+    else:
+        name = quiz_names[0]
+        num = 20
+    stats, plot = get_stats(num)
+    return render_template('stats_temp.html', stats = stats, plot = plot, quiz_names = quiz_names, current_quiz_name = current_quiz_name, name = name)
 
 def questions(n, Capitals):
         allstates = list(Capitals.keys())
@@ -103,30 +117,27 @@ def save_result(total_correct, number):
     cur.close()
     conn.close()
 
-def get_stats():
+def get_stats(num):
     # open connection to database
     conn = sqlite3.connect('capital_db.sqlite')
     cur = conn.cursor()
-    # get score data for 20 and 50 questions quizs
-    cur.execute('SELECT score FROM Scores WHERE quiz=20')
-    d20 = cur.fetchall()
-    dt = np.dtype('int')
-    dat20 = np.asarray(d20, dt)
-    dat20 = np.reshape(dat20, -1)
-    cur.execute('SELECT score FROM Scores WHERE quiz=50')
-    d50 = cur.fetchall()
-    dat50 = np.asarray(d50, dt)
-    dat50 = np.reshape(dat50, -1)
+    # get score data for "num" question quiz
+    if num == 20:
+        cur.execute('SELECT score FROM Scores WHERE Quiz=20')
+    else:
+        cur.execute('SELECT score FROM Scores WHERE Quiz=50')
+    data_raw = cur.fetchall()
+    data_type = np.dtype('int')
+    data = np.asarray(data_raw, data_type)
+    data = np.reshape(data, -1)
     # calculate stats
-    dat20avg = get_average(dat20)
-    dat50avg = get_average(dat50)
+    stats = get_average(data)
     # create histograms
-    dat20plot = get_plot(dat20, 21, 0, 20)
-    dat50plot = get_plot(dat50, 51, 0, 50)
+    plot = get_plot(data, num+1, 0, num)
     # close database connection
     cur.close()
     conn.close()
-    return dat20avg, dat20plot, dat50avg, dat50plot
+    return stats, plot
 
 def get_average(dat):
     dict = {}
