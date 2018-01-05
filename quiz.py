@@ -17,11 +17,10 @@ def index():
 def quiz():
     if request.method == "POST":
         if request.form['Submit'] == "20":
-            n = 20
+            session['number'] = 20
         else:
-            n = 50
-    session['number'] = n
-    capitals_states = questions(n, Capitals)
+            session['number'] = 50
+    capitals_states = questions(session['number'], Capitals)
     return render_template("quiz.html", capitals_states = capitals_states)
 
 @app.route('/about')
@@ -30,35 +29,33 @@ def about():
 
 @app.route('/map')
 def map():
-    return render_template('map.html', capitals = Capitals)
+    return render_template('map.html')
 
 @app.route('/result', methods = ["POST"])
 def result():
     if request.method == "POST":
         answers = request.form
-        length = len(answers)
         number = session['number']
         total_correct, wrong = check(answers, Capitals)
-        save_result(total_correct, number)
-        if length == 0:
+        if len(answers) == 0:
             return render_template('result_error.html')
         elif total_correct == number:
+            save_result(total_correct, number)
             return render_template('result_perfect.html', total_correct = total_correct, number = number)
         elif total_correct / number > .699:
+            save_result(total_correct, number)
             return render_template('result.html', total_correct = total_correct, wrong = wrong)
         else:
+            save_result(total_correct, number)
             return render_template('result_warning.html', total_correct = total_correct, wrong = wrong)
 
 @app.route('/stats', methods = ['GET', 'POST'])
 def stats():
     quiz_names = ['20 Question Quiz', '50 Question Quiz']
     current_quiz_name = ['20 Questions']
-    if request.method == 'POST':
-        print('POST')
-    else:
-        print('GET')
     if request.form.get('quiz_name') == '':
         name = quiz_names[0]
+        num = 20
     if request.form.get('quiz_name') == '50 Question Quiz':
         name = quiz_names[1]
         num = 50
@@ -122,17 +119,15 @@ def get_stats(num):
     conn = sqlite3.connect('capital_db.sqlite')
     cur = conn.cursor()
     # get score data for "num" question quiz
-    if num == 20:
-        cur.execute('SELECT score FROM Scores WHERE Quiz=20')
-    else:
-        cur.execute('SELECT score FROM Scores WHERE Quiz=50')
+    sql = 'SELECT score FROM Scores Where Quiz='+str(num)
+    cur.execute(sql)
     data_raw = cur.fetchall()
     data_type = np.dtype('int')
     data = np.asarray(data_raw, data_type)
     data = np.reshape(data, -1)
     # calculate stats
     stats = get_average(data)
-    # create histograms
+    # create histogram
     plot = get_plot(data, num+1, 0, num)
     # close database connection
     cur.close()

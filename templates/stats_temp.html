@@ -1,43 +1,29 @@
 {% extends 'layout.html' %}
-
 {% block body %}
 
 <div class="jumbotron">
     <form name='quiz_name' action="{{ url_for('stats') }}" class='form' method='POST'>
-        <strong>Select the quiz to display score statistics:</strong><br>
-
-        <div class="form-group">
-          <label for="sel1">Select list:</label>
-          <select class="form-control" id="sel1">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+        <strong>Select the quiz to display score statistics:</strong>
+        <select name='quiz_name' class="col-xs-2" id="sel1">
+            {% for quiz in quiz_names %}
+                {% if quiz == current_quiz_name %}
+                    <option selected='selected' value="{{ quiz }}">{{ quiz }}</option>
+                {% else %}
+                    <option value="{{ quiz }}">{{ quiz }}</option>
+                {% endif %}
+            {% endfor %}
           </select>
-        </div>
-
-
-
-            <select name="quiz_name">
-	               {% for quiz in quiz_names %}
-		                {% if quiz == current_quiz_name %}
-			                 <option selected='selected' value="{{ quiz }}">{{ quiz }}</option>
-		                {% else %}
-			                 <option value="{{ quiz }}">{{ quiz }}</option>
-		                {% endif %}
-	               {% endfor %}
-            </select>&nbsp;<input type="submit" class="btn btn-primary">
+          <br>&nbsp;<br><input type="submit" class="btn btn-success">
     </form><br>
     <strong>Statistics for the {{ name }}:</strong>
     <ul>{{quiz_name}}
-      <li>Mean quiz score: {{stats['mean']}}</li>
-      <li>Median quiz score: {{stats['median']}}</li>
-      <li>Standard deviation: {{stats['std']}}</li>
-      <li>Number of quiz attempts: {{stats['attempts']}}</li>
+        <li>Mean quiz score: {{stats['mean']}}</li>
+        <li>Median quiz score: {{stats['median']}}</li>
+        <li>Standard deviation: {{stats['std']}}</li>
+        <li>Number of quiz attempts: {{stats['attempts']}}</li>
     </ul>
-  <p>{{plot|safe}}</p>&nbsp;
-  <p><a class="btn btn-primary" role="button" href="{{ url_for('index') }}">Try the quiz!</a></p>
+    <p>{{plot|safe}}</p>&nbsp;
+    <p><a class="btn btn-success" role="button" href="{{ url_for('index') }}">Try the quiz!</a></p>
 </div>
-
 
 {% endblock %}
