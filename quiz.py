@@ -63,7 +63,7 @@ def stats():
         name = quiz_names[0]
         num = 20
     stats, plot = get_stats(num)
-    return render_template('stats_temp.html', stats = stats, plot = plot, quiz_names = quiz_names, current_quiz_name = current_quiz_name, name = name)
+    return render_template('stats.html', stats = stats, plot = plot, quiz_names = quiz_names, current_quiz_name = current_quiz_name, name = name)
 
 def questions(n, Capitals):
         allstates = list(Capitals.keys())
@@ -149,7 +149,7 @@ def get_plot(dat, bwidth, bmin, bmax):
         step = 2
     counts = np.bincount(dat)
     fig, ax = plt.subplots()
-    ax.bar(range(bwidth), counts, width=1, align='center')
+    ax.bar(range(bwidth), counts, width=1, align='center', color='#ff474c', edgecolor='k')
     ax.set(xticks=range(0, bwidth, step), xlim=[-1, bwidth])
     plt.title("Histogram of Quiz Scores")
     chart = mpld3.fig_to_html(fig)
