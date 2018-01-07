@@ -146,7 +146,8 @@ def get_stats(num):
     # calculate stats
     stats = get_average(data)
     # create histogram
-    plot = get_plot(data, num+1)
+    plot = get_plot(data, num+1, 0, num)
+    # close database connection
     return stats, plot
 
 def get_average(dat):

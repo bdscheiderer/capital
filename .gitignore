@@ -1,3 +1,5 @@
 *.pyc
 _pycache_
 credentials.py
+/misc/
+state_capitals.png
